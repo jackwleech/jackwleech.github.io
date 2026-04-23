@@ -1,0 +1,41 @@
+name: Mirror to GitHub Forks
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  mirror-goon:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          lfs: true
+          token: ${{ secrets.MIRROR_TOKEN }}
+      - run: |
+          git config --global user.name "harshulmoon"
+          git config --global user.email "harshulmoon@users.noreply.github.com"
+          git lfs install
+          git lfs fetch --all
+          git remote add goon https://harshulmoon:${{ secrets.MIRROR_TOKEN }}@github.com/harshulgoon/harshulgoon.github.io.git
+          git push goon --all --force
+          git push goon --tags --force
+
+  mirror-silverspoon:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          lfs: true
+          token: ${{ secrets.MIRROR_TOKEN }}
+      - run: |
+          git config --global user.name "harshulmoon"
+          git config --global user.email "harshulmoon@users.noreply.github.com"
+          git lfs install
+          git lfs fetch --all
+          git remote add silverspoon https://harshulmoon:${{ secrets.MIRROR_TOKEN }}@github.com/harshulsilverspoon/harshulsilverspoon.github.io.git
+          git push silverspoon --all --force
+          git push silverspoon --tags --force

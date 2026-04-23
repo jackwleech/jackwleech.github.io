@@ -1,0 +1,348 @@
+<html>
+  <head>
+     <link id="dynamic-favicon" rel="icon" href="resources/download.png">
+ <link rel="manifest" href="manifest.json">
+       <title class="p1">Home | Compass</title>
+
+  <script>
+function applyBrandMode() {
+    const mode = localStorage.getItem("brandMode") || "normal";
+    const favicon = document.getElementById("dynamic-favicon");
+
+    if (mode === "alt") {
+        document.title = "Dashboard";
+        favicon.href = "resources/canvas.png?v=1";
+    } else {
+        document.title = "Home | Compass";
+        favicon.href = "resources/download.png?v=1";
+    }
+}
+
+// Run on page load
+applyBrandMode();
+</script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+
+        :root {
+            --primary-orange: #1e90ff;
+            --primary-orange-rgb: 30, 144, 255;
+            --dark-bg: #0a0a0a;
+            --light-text: #f6f4ef;
+            --gray-text: #b5b0a6;
+            --accent-orange: #4169e1;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: var(--light-text);
+            overflow-x: hidden;
+            line-height: 1.55;
+        }
+
+        #background-root {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            overflow: hidden;
+            background: url('resources/background.webp') center/cover no-repeat;
+        }
+
+        #background-root::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(10, 10, 10, 0.7);
+        }
+
+        #background-glow {
+            position: absolute;
+            inset: 0;
+            opacity: 0.55;
+            background: radial-gradient(circle at 50% 45%, rgba(var(--primary-orange-rgb), 0.18) 0%, rgba(var(--primary-orange-rgb), 0.08) 35%, transparent 70%);
+        }
+
+        #background-vignette {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at center, transparent 0%, transparent 45%, rgba(5, 7, 10, 0.86) 100%);
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        header {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(var(--primary-orange-rgb), 0.55);
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            height: 90px;
+            border-radius: 12px;
+            filter: drop-shadow(0 0 6px rgba(var(--primary-orange-rgb), 0.4));
+            transition: transform 0.22s ease, filter 0.22s ease;
+            margin-bottom: 15px;
+            font-size: 60px;
+        }
+
+        .logo:hover {
+            transform: scale(1.08);
+            filter: drop-shadow(0 0 20px rgba(var(--primary-orange-rgb), 0.9));
+        }
+
+        h1 {
+            color: var(--primary-orange);
+            font-size: 2.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(var(--primary-orange-rgb), 0.6);
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: var(--gray-text);
+            font-size: 1rem;
+            letter-spacing: 0.5px;
+        }
+
+        section {
+            margin: 28px 0;
+            padding: 24px;
+            background: linear-gradient(145deg, rgba(24, 24, 24, 0.62), rgba(11, 11, 11, 0.5));
+            border-radius: 18px;
+            border: 1px solid rgba(var(--primary-orange-rgb), 0.33);
+            backdrop-filter: blur(8px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        section > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        h2 {
+            color: var(--primary-orange);
+            margin: 8px auto 24px;
+            font-size: 1.55rem;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            text-shadow: 0 0 4px rgba(var(--primary-orange-rgb), 0.42);
+            padding: 12px 20px;
+            text-align: center;
+            background: linear-gradient(145deg, rgba(var(--primary-orange-rgb), 0.09), rgba(10, 10, 10, 0.28));
+            border: 1px solid var(--primary-orange);
+            border-radius: 12px;
+            box-shadow: 0 0 14px rgba(var(--primary-orange-rgb), 0.28);
+            max-width: 360px;
+            transition: all 0.3s;
+        }
+
+        h2:hover {
+            box-shadow: 0 0 18px rgba(var(--primary-orange-rgb), 0.42);
+            transform: translateY(-2px);
+        }
+
+        h2::before,
+        h2::after {
+            content: '[';
+            color: var(--accent-orange);
+            text-shadow: 0 0 10px rgba(var(--primary-orange-rgb), 0.7);
+            margin-right: 10px;
+        }
+
+        h2::after {
+            content: ']';
+            margin-left: 10px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+            gap: 18px;
+            margin-top: 20px;
+        }
+
+        .card {
+            background: linear-gradient(160deg, rgba(20, 20, 20, 0.82), rgba(10, 10, 10, 0.78));
+            border: 1px solid rgba(var(--primary-orange-rgb), 0.48);
+            border-radius: 14px;
+            padding: 16px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 18px rgba(var(--primary-orange-rgb), 0.3);
+            border-color: var(--accent-orange);
+        }
+
+        .card-image {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 12px;
+            border: 1px solid rgba(var(--primary-orange-rgb), 0.24);
+        }
+
+        .card-title {
+            font-size: 1.15rem;
+            color: var(--light-text);
+            margin-bottom: 8px;
+        }
+
+        .card-desc {
+            color: var(--gray-text);
+            font-size: 0.92rem;
+            line-height: 1.5;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            background: rgba(var(--primary-orange-rgb), 0.2);
+            color: var(--primary-orange);
+            border: 1px solid var(--primary-orange);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            background: rgba(var(--primary-orange-rgb), 0.3);
+            box-shadow: 0 0 15px var(--primary-orange);
+            transform: translateY(-2px);
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .social-icons a {
+            color: var(--primary-orange);
+            font-size: 1.5rem;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .social-icons a:hover {
+            color: var(--accent-orange);
+            transform: translateY(-2px);
+            text-shadow: 0 0 10px rgba(var(--primary-orange-rgb), 0.7);
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 40px;
+            border-top: 1px solid var(--primary-orange);
+            color: var(--gray-text);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .logo {
+                height: 60px;
+                font-size: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="background-root">
+        <div id="background-glow"></div>
+        <div id="background-vignette"></div>
+    </div>
+
+    <div class="container">
+        <header>
+            <div class="logo">🔥</div>
+            <h1>Popular</h1>
+            <p class="subtitle">Hottest Games on harshulmoon.github.io</p>
+        </header>
+
+        <section>
+            <h2>Games</h2>
+            <div class="grid">
+              
+                <div class="card">
+                    <img src="https://raw.githubusercontent.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/refs/heads/master/images/195.jpg" class="card-image">
+                    <h3 class="card-title">Balatro</h3>
+                    <p class="card-desc">Balatro is a hypnotic poker-themed roguelike and deckbuilder. Discover game-changing jokers and trigger outrageous combos.</p>
+                    <a href="/iframes/balatro.html" class="btn">Play <i class="fas fa-arrow-right"></i></a>
+                </div>
+
+                <div class="card">
+                    <img src="https://raw.githubusercontent.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/refs/heads/master/images/197.jpg" class="card-image">
+                    <h3 class="card-title">Plants Vs Zombies 2</h3>
+                    <p class="card-desc">Defend your lawn across time with new crazy plants.</p>
+                    <a href="/iframes/pvz2.html" class="btn">Play <i class="fas fa-arrow-right"></i></a>
+                </div>
+
+                <div class="card">
+                    <img src="https://raw.githubusercontent.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/refs/heads/master/images/341.jpg" class="card-image">
+                    <h3 class="card-title">Deltarune</h3>
+                    <p class="card-desc">Deltarune is a thrilling RPG that blends humor, heart, and challenging bullet-hell combat. Join Kris on a journey through the Dark World filled with unforgettable characters, tough choices, and surprising twists.</p>
+                    <a href="/iframes/deltarune.html" class="btn">Play <i class="fas fa-arrow-right"></i></a>
+                </div>
+
+                <div class="card">
+                    <img src="/resources/stardewvalley.webp" class="card-image">
+                    <h3 class="card-title">Stardew Valley</h3>
+                    <p class="card-desc">You've inherited your grandfather's old farm plot in Stardew Valley. Armed with hand-me-down tools and a few coins, can you learn to live off the land and turn these overgrown fields into a thriving home?</p>
+                    <a href="/iframes/stardew.html" class="btn">Play <i class="fas fa-arrow-right"></i></a>
+                </div>
+
+                <div class="card">
+                    <img src="https://raw.githubusercontent.com/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor/refs/heads/master/images/28.jpg" class="card-image">
+                    <h3 class="card-title">Hollow Knight</h3>
+                    <p class="card-desc">An epic action adventure through a vast ruined kingdom of insects and heroes. Explore twisting caverns, battle tainted creatures and befriend bizarre bugs, all in a classic, hand-drawn 2D style.</p>
+                    <a href="/iframes/hollowknight.html" class="btn">Play <i class="fas fa-arrow-right"></i></a>
+                </div>
+              
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Smooth scroll behavior
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
